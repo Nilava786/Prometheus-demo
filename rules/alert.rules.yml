@@ -1,0 +1,11 @@
+groups:
+  - name: example-alerts
+    rules:
+      - alert: HighCpuUsage
+        expr: sum(rate(process_cpu_seconds_total[1m])) by (instance) > 0.9
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High CPU usage detected on instance {{ $labels.instance }}"
+          description: "CPU usage is above 90% for more than 5 minutes."

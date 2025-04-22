@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./rules:/etc/prometheus/rules
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - "9090:9090"
+
+  alertmanager:
+    image: prom/alertmanager
+    container_name: alertmanager
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9093:9093"
+    restart: always
+
+  nginx_service:
+    image: nginx
+    container_name: nginx_service
+    ports:
+      - "8080:80"
+      
+volumes:
+  prometheus_data:   # Declare Prometheus persistent volume
+  alertmanager_data: # Declare Alertmanager persistent volume
+
